@@ -6,6 +6,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-08-23
+
 ### Added
 
 - **Core** — namespaced JSON contract parser, flattener, and resolver
@@ -31,4 +33,5 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - Minimum deployment targets raised to **iOS 15 / tvOS 15 / macOS 12**.
 
-[Unreleased]: https://github.com/iQbalADR/tandha/commits/main
+[Unreleased]: https://github.com/iQbalADR/tandha/compare/0.1.0...HEAD
+[0.1.0]: https://github.com/iQbalADR/tandha/releases/tag/0.1.0
