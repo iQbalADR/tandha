@@ -1,0 +1,38 @@
+name: Feature request
+description: Suggest a new export format, lint rule, binding, or other capability.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: Describe the QA/dev drift or friction you're hitting.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: What should tandha do? A CLI sketch or API sketch helps.
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind of contribution
+      description: Export formats, lint rules, and bindings are single-file additions.
+      options:
+        - New export format
+        - New lint rule
+        - New / improved binding
+        - Core / codegen change
+        - Other
+    validations:
+      required: true
+  - type: checkboxes
+    id: honesty
+    attributes:
+      label: Scope check
+      options:
+        - label: This does not claim direct Selenium/Katalon native-iOS control (the bridge is always Appium's XCUITest driver).
+          required: true

@@ -1,0 +1,16 @@
+{
+  "login": {
+    "username_field": "login.username_field",
+    "password_field": "login.password_field",
+    "submit_button": {
+      "$id": "login.submit_button",
+      "description": "Primary sign-in button",
+      "screen": "Login",
+      "owner": "auth-team"
+    }
+  },
+  "dashboard": {
+    "balance_label": "dashboard.balance_label",
+    "refresh_button": null
+  }
+}

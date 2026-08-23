@@ -1,0 +1,51 @@
+name: Bug report
+description: Something in tandha behaves incorrectly.
+labels: [bug]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you do, what did you expect, and what happened instead?
+      placeholder: |
+        Steps:
+        1. Contract JSON: ...
+        2. Ran: tandha generate ...
+        3. Expected: ...
+        4. Got: ...
+    validations:
+      required: true
+  - type: textarea
+    id: contract
+    attributes:
+      label: Minimal contract JSON
+      description: The smallest contract that reproduces the issue.
+      render: json
+  - type: input
+    id: version
+    attributes:
+      label: tandha version
+      placeholder: 0.1.0 (or commit SHA)
+    validations:
+      required: true
+  - type: input
+    id: toolchain
+    attributes:
+      label: Swift / Xcode version
+      placeholder: "swift --version output; Xcode 26.x"
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - core (parser/resolver)
+        - codegen / plugin
+        - export
+        - lint
+        - bindings (SwiftUI/UIKit/XIB)
+        - xcuitest
+        - CLI
+    validations:
+      required: true
