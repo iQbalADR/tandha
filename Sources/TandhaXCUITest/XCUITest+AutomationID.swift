@@ -1,6 +1,9 @@
 #if canImport(XCTest)
 import XCTest
+// Separate module under SPM; folded into the single `Tandha` module under CocoaPods.
+#if canImport(TandhaCore)
 import TandhaCore
+#endif
 
 extension XCUIElementQuery {
     /// Look up an element in this query by automation identifier.

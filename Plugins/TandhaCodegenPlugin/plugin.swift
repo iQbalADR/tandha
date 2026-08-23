@@ -18,7 +18,7 @@ struct TandhaCodegenPlugin: BuildToolPlugin {
     func createBuildCommands(context: PluginContext, target: Target) async throws -> [Command] {
         guard let sourceTarget = target as? SourceModuleTarget else { return [] }
         return try commands(
-            tool: context.tool(named: "tandha"),
+            tool: context.tool(named: "TandhaCLI"),
             workDir: context.pluginWorkDirectory,
             inputs: sourceTarget.sourceFiles.map(\.path)
         )
@@ -46,7 +46,7 @@ import XcodeProjectPlugin
 extension TandhaCodegenPlugin: XcodeBuildToolPlugin {
     func createBuildCommands(context: XcodePluginContext, target: XcodeTarget) throws -> [Command] {
         try commands(
-            tool: context.tool(named: "tandha"),
+            tool: context.tool(named: "TandhaCLI"),
             workDir: context.pluginWorkDirectory,
             inputs: target.inputFiles.map(\.path)
         )

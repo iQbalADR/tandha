@@ -7,25 +7,32 @@ import PackageDescription
 let package = Package(
     name: "tandha",
     platforms: [
-        .macOS(.v10_15),
-        .iOS(.v13),
-        .tvOS(.v13),
+        .iOS(.v15),
+        .macOS(.v12),
+        .tvOS(.v15),
     ],
     products: [
-        // App-side: define + assign automation identifiers.
-        .library(name: "Tandha", targets: ["TandhaCore", "TandhaUIKit", "TandhaSwiftUI"]),
+        // App-side: define + assign automation identifiers. The `Tandha`
+        // umbrella re-exports Core + UIKit + SwiftUI (so `import Tandha` works,
+        // matching the CocoaPods module); the sub-modules stay importable too.
+        .library(name: "Tandha", targets: ["Tandha", "TandhaCore", "TandhaUIKit", "TandhaSwiftUI"]),
         // Test-side: typed XCUITest accessors.
         .library(name: "TandhaXCUITest", targets: ["TandhaXCUITest"]),
         // Tooling libraries, usable programmatically outside the CLI.
         .library(name: "TandhaTooling", targets: ["TandhaCodegen", "TandhaExport", "TandhaLint"]),
-        // The command-line tool.
-        .executable(name: "tandha", targets: ["tandha"]),
+        // The command-line tool. Product/command is `tandha`; the target is
+        // `TandhaCLI` so its module name doesn't collide (case-insensitively)
+        // with the `Tandha` umbrella library on case-insensitive filesystems.
+        .executable(name: "tandha", targets: ["TandhaCLI"]),
         // Build-time codegen plugin.
         .plugin(name: "TandhaCodegenPlugin", targets: ["TandhaCodegenPlugin"]),
     ],
     targets: [
         // MARK: core
         .target(name: "TandhaCore"),
+
+        // MARK: umbrella (re-exports the app-side modules as `import Tandha`)
+        .target(name: "Tandha", dependencies: ["TandhaCore", "TandhaUIKit", "TandhaSwiftUI"]),
 
         // MARK: bindings
         .target(name: "TandhaUIKit", dependencies: ["TandhaCore"]),
@@ -41,7 +48,7 @@ let package = Package(
 
         // MARK: cli
         .executableTarget(
-            name: "tandha",
+            name: "TandhaCLI",
             dependencies: ["TandhaCore", "TandhaCodegen", "TandhaExport", "TandhaLint"]
         ),
 
@@ -49,7 +56,7 @@ let package = Package(
         .plugin(
             name: "TandhaCodegenPlugin",
             capability: .buildTool(),
-            dependencies: ["tandha"]
+            dependencies: ["TandhaCLI"]
         ),
 
         // MARK: tests

@@ -37,6 +37,16 @@ and query the exact same identifiers from XCUITest and Appium-based tools
 
     Full details on the [installation page](installation.md).
 
+=== "CocoaPods"
+
+    ```ruby
+    # Podfile
+    pod 'Tandha'            # Core + UIKit + SwiftUI  (import Tandha)
+    pod 'Tandha/XCUITest'   # in the UI test target
+    ```
+
+    Requires iOS 15+. See the [installation page](installation.md).
+
 ## Quick look
 
 === "1 · Define"

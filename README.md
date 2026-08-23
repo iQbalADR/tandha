@@ -3,7 +3,8 @@
 [![CI](https://github.com/iQbalADR/tandha/actions/workflows/ci.yml/badge.svg)](https://github.com/iQbalADR/tandha/actions/workflows/ci.yml)
 [![Docs](https://img.shields.io/badge/docs-tandha-blue)](https://iqbaladr.github.io/tandha/)
 [![SwiftPM](https://img.shields.io/badge/SwiftPM-compatible-brightgreen)](https://github.com/iQbalADR/tandha)
-[![Platforms](https://img.shields.io/badge/platforms-iOS%20%7C%20tvOS%20%7C%20macOS-lightgrey)](https://github.com/iQbalADR/tandha)
+[![CocoaPods](https://img.shields.io/badge/CocoaPods-compatible-brightgreen)](Tandha.podspec)
+[![Platforms](https://img.shields.io/badge/platforms-iOS%2015%2B%20%7C%20tvOS%2015%2B%20%7C%20macOS%2012%2B-lightgrey)](https://github.com/iQbalADR/tandha)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 > **tandha** — Javanese for "sign / mark." A single shared source of truth for the
@@ -42,7 +43,10 @@ richer exports.
 
 ## Install
 
-Swift Package Manager (see the full [installation guide](docs/installation.md)):
+Requires iOS 15+ / tvOS 15+ / macOS 12+. See the full
+[installation guide](docs/installation.md).
+
+**Swift Package Manager:**
 
 ```swift
 // Package.swift
@@ -55,6 +59,14 @@ targets: [
         .product(name: "TandhaXCUITest", package: "tandha"),  // query IDs
     ]),
 ]
+```
+
+**CocoaPods:**
+
+```ruby
+# Podfile
+pod 'Tandha'            # Core + UIKit + SwiftUI  (import Tandha)
+pod 'Tandha/XCUITest'   # in the UI test target
 ```
 
 ## 60-second quickstart

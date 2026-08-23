@@ -1,8 +1,10 @@
 #if canImport(SwiftUI)
 import SwiftUI
+// Separate module under SPM; folded into the single `Tandha` module under CocoaPods.
+#if canImport(TandhaCore)
 import TandhaCore
+#endif
 
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 extension View {
     /// Assign an automation identifier, wrapping `.accessibilityIdentifier(_:)`.
     ///

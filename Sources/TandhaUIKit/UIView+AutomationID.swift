@@ -1,6 +1,9 @@
 #if canImport(UIKit)
 import UIKit
+// Separate module under SPM; folded into the single `Tandha` module under CocoaPods.
+#if canImport(TandhaCore)
 import TandhaCore
+#endif
 
 private var automationKeyAssociationKey: UInt8 = 0
 

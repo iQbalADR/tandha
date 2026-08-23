@@ -23,5 +23,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   Java page object.
 - **Lint** — `tandha lint` with duplicate-identifier, missing-key, unused-key, and
   naming-convention rules, and CI-friendly exit codes.
+- **Distribution** — CocoaPods support via `Tandha.podspec` (Core / UIKit / SwiftUI /
+  XCUITest subspecs) alongside Swift Package Manager, plus a `Tandha` umbrella module
+  so `import Tandha` works under both.
+
+### Changed
+
+- Minimum deployment targets raised to **iOS 15 / tvOS 15 / macOS 12**.
 
 [Unreleased]: https://github.com/iQbalADR/tandha/commits/main
