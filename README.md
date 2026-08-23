@@ -1,39 +1,65 @@
 # tandha
 
-**One JSON contract for every UI automation identifier in your iOS app — set once,
-queried by XCUITest and Appium-based tools (Katalon, Selenium-family) alike.**
+[![CI](https://github.com/iQbalADR/tandha/actions/workflows/ci.yml/badge.svg)](https://github.com/iQbalADR/tandha/actions/workflows/ci.yml)
+[![Docs](https://img.shields.io/badge/docs-tandha-blue)](https://iqbaladr.github.io/tandha/)
+[![SwiftPM](https://img.shields.io/badge/SwiftPM-compatible-brightgreen)](https://github.com/iQbalADR/tandha)
+[![Platforms](https://img.shields.io/badge/platforms-iOS%20%7C%20tvOS%20%7C%20macOS-lightgrey)](https://github.com/iQbalADR/tandha)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-Define each automation identifier once in JSON. Assign it to elements via XIB,
-UIKit, or SwiftUI. Consume the exact same identifiers from XCUITest and export
-them for external QA tooling. No scattered magic strings; no silent drift when
-someone renames one.
+> **tandha** — Javanese for "sign / mark." A single shared source of truth for the
+> UI automation identifiers in your iOS app.
+>
+> 📖 **Docs: <https://iqbaladr.github.io/tandha/>**
 
-## Why
+Centralized **UI automation-identifier toolkit** for iOS. Define every automation
+identifier once in a **shared JSON contract**; assign it to elements via XIB, UIKit,
+or SwiftUI; and query the exact same identifiers from XCUITest and Appium-based tools
+(Katalon, Selenium-family). Three defining capabilities:
 
-In large apps — especially banking/fintech with big regression suites —
-automation identifiers are usually hardcoded magic strings duplicated across app
-code *and* the test suite, inconsistently named, and silently broken when a
-developer renames one while QA's scripts still expect the old value. There is no
-shared contract between the people who *set* IDs and the people who *query* them.
+1. **One contract, both sides** — developers *set* IDs and QA *query* them from the
+   same JSON. No scattered magic strings.
+2. **Type-safe codegen** — generate a Swift enum tree (CLI or SwiftPM plugin); rename a
+   key and the compiler flags every stale reference.
+3. **Export & lint** — emit the contract for external QA tooling, and validate it in CI
+   (duplicate / missing / unused / naming) with non-zero exit codes.
 
-**This library makes the JSON that contract.**
+Every iOS automation stack keys off one property — `accessibilityIdentifier` — so
+tandha's job is to manage keys, reliably set that identifier, and export the key list.
 
-## How it works
+> **Honest by design.** tandha does not claim direct Selenium/Katalon native-iOS
+> control; the bridge is always Appium's XCUITest driver. It sets the identifier every
+> iOS automation stack relies on — it is **not** a test runner or an Appium replacement.
 
-Every iOS automation stack keys off one property: `accessibilityIdentifier`. Set
-it once and it is visible to:
+## Status
 
-- **XCUITest** (native) via `element.identifier` / query subscripting,
-- **Appium** via the `accessibility id` locator strategy,
-- **Katalon Studio (mobile)** and **Selenium-family** tools *through Appium* —
-  the Appium XCUITest driver is the bridge; they do not drive native iOS directly.
+| Platform | Package | Status |
+|----------|---------|--------|
+| iOS / tvOS / macOS · Swift | [`Package.swift`](Package.swift) | ✅ v1 + v2 — `swift test` green (31 tests) |
 
-tandha's job is exactly this: manage keys, reliably set `accessibilityIdentifier`,
-and export the key list so any of those tools consume the same contract.
+The [phased roadmap](docs/DESIGN.md) is: **v1** core + bindings + XCUITest + basic lint,
+**v2** codegen (CLI + plugin) + export + full lint (this), **v3** Android parity and
+richer exports.
+
+## Install
+
+Swift Package Manager (see the full [installation guide](docs/installation.md)):
+
+```swift
+// Package.swift
+dependencies: [ .package(url: "https://github.com/iQbalADR/tandha.git", from: "0.1.0") ],
+targets: [
+    .target(name: "App", dependencies: [
+        .product(name: "Tandha", package: "tandha"),          // assign IDs
+    ]),
+    .testTarget(name: "AppUITests", dependencies: [
+        .product(name: "TandhaXCUITest", package: "tandha"),  // query IDs
+    ]),
+]
+```
 
 ## 60-second quickstart
 
-**1. Define the contract** (`automation-ids.json`):
+**1. Define the contract** (`automation-ids.json` — see [docs/format.md](docs/format.md)):
 
 ```json
 {
@@ -46,12 +72,11 @@ and export the key list so any of those tools consume the same contract.
 
 **2. Generate type-safe references:**
 
-```sh
+```bash
 tandha generate automation-ids.json --output Generated/AutomationID.swift
 ```
 
 ```swift
-// generated
 public enum AutomationID {
     public enum login {
         public static let usernameField = "login.username_field"
@@ -60,12 +85,13 @@ public enum AutomationID {
 }
 ```
 
-**3. Assign in SwiftUI (or UIKit / XIB):**
+**3. Assign in SwiftUI** (or UIKit / XIB):
 
 ```swift
+import Tandha
+
 TextField("Username", text: $username)
     .automationID(AutomationID.login.usernameField)
-
 Button("Sign in") { signIn() }
     .automationID(AutomationID.login.submitButton)
 ```
@@ -73,107 +99,58 @@ Button("Sign in") { signIn() }
 **4. Query the same IDs in XCUITest:**
 
 ```swift
+import TandhaXCUITest
+
 app.textFields[automationID: AutomationID.login.usernameField].tap()
 app.buttons[automationID: AutomationID.login.submitButton].tap()
 ```
 
 Rename a key in the JSON → regenerate → the compiler flags every stale reference.
-That is what eliminates drift on the developer side.
+Prefer zero manual steps? Add the [build-time plugin](docs/codegen.md).
 
-## Installation
+## Export & lint
 
-Add the package in `Package.swift`:
-
-```swift
-.package(url: "https://github.com/iQbalADR/tandha.git", from: "0.1.0")
-```
-
-Then depend on what each target needs:
-
-```swift
-// App target — assign identifiers
-.product(name: "Tandha", package: "tandha"),
-// UI test target — query identifiers
-.product(name: "TandhaXCUITest", package: "tandha"),
-```
-
-The `tandha` CLI is also built by the package; a Homebrew formula will follow.
-
-## Assigning identifiers
-
-Three surfaces, one shared resolver — behavior is identical however the element
-was built.
-
-- **SwiftUI:** `.automationID(AutomationID.login.submitButton)` (wraps
-  `.accessibilityIdentifier(_:)`).
-- **UIKit:** `view.setAutomationID(AutomationID.login.submitButton)`.
-- **XIB / Storyboard:** set the `automationKey` inspectable (a dot-path key) in
-  Interface Builder; it resolves through `AutomationRegistry.shared` and sets
-  `accessibilityIdentifier` during nib loading.
-
-Key-based surfaces (XIB and the `*Key` helpers) resolve through a shared
-registry. Configure it once at launch:
-
-```swift
-try AutomationRegistry.shared.configure(contentsOf: contractURL)
-```
-
-## Build-time codegen (SwiftPM plugin)
-
-Skip the manual `generate` step. Add the plugin and drop a
-`*.automationids.json` file into a target's sources:
-
-```swift
-.target(
-    name: "App",
-    plugins: [.plugin(name: "TandhaCodegenPlugin", package: "tandha")]
-)
-```
-
-The `AutomationID` enum is regenerated and compiled in on every build. Nothing to
-check in.
-
-## Export for Appium / Katalon / Selenium-family
-
-Keep a cross-platform suite in lockstep with the app:
-
-```sh
+```bash
 tandha export automation-ids.json --format json   # flat { key: identifier }
 tandha export automation-ids.json --format csv    # key,identifier,description,screen,owner
 tandha export automation-ids.json --format java   # Appium AppiumBy.accessibilityId page object
+
+tandha lint automation-ids.json --naming dotted-snake   # non-zero exit on errors (CI)
 ```
 
-## Validation (CI-friendly)
+## Architecture
 
-`tandha lint` returns a non-zero exit code when it finds problems:
-
-```sh
-tandha lint automation-ids.json \
-  --sources Sources \
-  --naming dotted-snake \
-  --expect-keys qa-owned-keys.txt
+```
+TandhaCore     parser -> flattener -> resolver (key -> identifier) + registry
+TandhaCodegen  JSON -> Swift enum tree (CLI + SwiftPM plugin)
+bindings       TandhaUIKit (XIB @IBInspectable + helper) · TandhaSwiftUI (.automationID)
+TandhaXCUITest typed query accessors for the test target
+TandhaExport   flat JSON/CSV + page-object stub generators
+TandhaLint     duplicate / missing / unused / naming checks
+tandha         the command-line tool
 ```
 
-- **duplicate** identifier values (error),
-- **missing** keys expected but absent (error),
-- **unused** keys defined but never referenced in scanned sources (warning),
-- **naming-convention** enforcement via regex or a preset (`snake`, `dotted-snake`).
+Modular per concern so a contributor can touch one thing: each **export format** is a
+single-file `Exporter`, each **lint rule** a single-file `LintRule`, each **binding** a
+small file. See [CONTRIBUTING.md](CONTRIBUTING.md) and the
+[good first issues](docs/good-first-issues.md).
 
-Use `--basic` for the always-safe subset (duplicates only).
+## Building & testing
 
-## Scope
+The package is dependency-free — it builds and tests offline.
 
-- **In scope (v1/v2):** managing and assigning accessibility identifiers,
-  XCUITest helpers, codegen, export for external tools, validation/lint.
-- **Out of scope:** the automation execution itself (this is **not** a test
-  runner and not an Appium replacement), Android (possible v3), web.
+```bash
+swift build          # libraries, CLI, and codegen plugin
+swift test           # 31 unit tests
+swift run tandha --help
+```
 
 ## Documentation
 
-- [The contract format](docs/format.md) — the normative JSON spec.
-- [Contributing](CONTRIBUTING.md) — bindings, export formats, and lint rules are
-  all single-file contributions.
+Full docs: **<https://iqbaladr.github.io/tandha/>** — or in [`docs/`](docs/):
+[installation](docs/installation.md) · [quickstart](docs/quickstart.md) ·
+[JSON format](docs/format.md) · [CLI](docs/cli.md) · [design & roadmap](docs/DESIGN.md).
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+[MIT](LICENSE) © iQbalADR

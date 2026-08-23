@@ -1,0 +1,50 @@
+# PR auto-labels by touched path (actions/labeler v5 syntax).
+# tandha is modular — these labels mirror the single-file contribution surfaces.
+documentation:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/*.md"
+          - "docs/**"
+          - "mkdocs.yml"
+
+ci:
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".github/**"
+
+core:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "Sources/TandhaCore/**"
+
+codegen:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "Sources/TandhaCodegen/**"
+          - "Plugins/**"
+
+export:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "Sources/TandhaExport/**"
+
+lint:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "Sources/TandhaLint/**"
+
+bindings:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "Sources/TandhaUIKit/**"
+          - "Sources/TandhaSwiftUI/**"
+
+xcuitest:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "Sources/TandhaXCUITest/**"
+
+cli:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "Sources/tandha/**"

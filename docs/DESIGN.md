@@ -1,7 +1,8 @@
 # tandha — Centralized UI Automation-Identifier Toolkit for iOS
 
 > The original design brief for tandha. Kept for context; the shipped behavior is
-> documented in [the contract format](format.md) and the [README](../README.md).
+> documented in [the contract format](format.md) and the
+> [README](https://github.com/iQbalADR/tandha/blob/main/README.md).
 
 ---
 

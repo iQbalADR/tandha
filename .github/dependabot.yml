@@ -1,0 +1,22 @@
+version: 2
+updates:
+  # GitHub Actions used by the workflows. Batched into a single PR per run.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    labels: ["ci", "dependencies"]
+    groups:
+      github-actions:
+        patterns: ["*"]
+
+  # SwiftPM dependencies (root Package.swift). None today, but this keeps any
+  # future ones current.
+  - package-ecosystem: swift
+    directory: /
+    schedule:
+      interval: weekly
+    labels: ["dependencies"]
+    groups:
+      swift:
+        patterns: ["*"]

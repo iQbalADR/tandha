@@ -41,4 +41,5 @@ in `Linter.all`, and add a test in `Tests/TandhaLintTests/`.
 
 Every new format/rule needs a unit test; keep output deterministic (sorted by
 key); never claim direct Selenium/Katalon native-iOS control — the bridge is
-always Appium's XCUITest driver. See [CONTRIBUTING.md](../CONTRIBUTING.md).
+always Appium's XCUITest driver. See
+[CONTRIBUTING.md](https://github.com/iQbalADR/tandha/blob/main/CONTRIBUTING.md).

@@ -14,3 +14,6 @@ DerivedData/
 
 ## Generated codegen output (checked-in copies opt-in only)
 *.generated.swift
+
+## MkDocs docs site build output
+site/
