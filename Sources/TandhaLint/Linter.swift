@@ -21,7 +21,7 @@ public struct Linter {
         ])
     }
 
-    /// The always-safe subset that needs only the model (v1 "basic lint").
+    /// The always-safe subset that needs only the model (duplicate identifiers only).
     public static var basic: Linter {
         Linter(rules: [DuplicateIdentifierRule()])
     }

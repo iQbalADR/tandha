@@ -23,8 +23,8 @@ public struct LintContext {
     }
 }
 
-/// A self-contained lint check. Each rule lives in one file — an ideal
-/// "good first issue".
+/// A self-contained lint check; each rule lives in one file and is registered in
+/// `Linter.all`.
 public protocol LintRule {
     /// Stable rule id used in findings, e.g. `duplicate-identifier`.
     var name: String { get }

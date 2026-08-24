@@ -3,8 +3,7 @@ import TandhaCore
 
 /// A format that renders an `AutomationModel` into text for external QA tooling.
 ///
-/// Each format is a single self-contained type — an ideal "good first issue".
-/// Register new formats in `Exporters.all`.
+/// Each format is a single self-contained type, registered in `Exporters.all`.
 public protocol Exporter {
     /// CLI-facing format name, e.g. `json`, `csv`, `java`.
     static var formatName: String { get }
